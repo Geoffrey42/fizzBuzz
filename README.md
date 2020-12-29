@@ -1,1 +1,45 @@
 # fizzBuzz
+
+A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
+
+## Assignment
+
+The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by "fizz", all multiples of 5 by "buzz", and all multiples of 15 by "fizzbuzz".
+
+The output would look like this: **"1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,13,14,fizzbuzz,16,..."**.
+
+1. Your goal is to implement a web server that will expose a REST API endpoint that:
+
+    - Accepts five parameters : three integers **int1**, **int2** and **limit**, and two strings **str1** and **str2**.
+    - Returns a list of strings with numbers from 1 to **limit**, where: all multiples of **int1** are replaced by **str1**, all multiples of **int2** are replaced by **str2**, all multiples of **int1** and **int2** are replaced by **str1str2**.
+
+2. Add a statistics endpoint allowing users to know what the most frequent request has been.
+
+    This endpoint should:
+
+    - Accept no parameter
+    - Return the parameters corresponding to the most used request, as well as the number of hits for this request
+
+3. The server needs to be:
+
+    - Ready for production
+    - Easy to maintain by other developers
+
+## Prerequisites
+
+- [make](https://www.gnu.org/software/make/manual/make.html)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [docker](https://docs.docker.com/get-docker/)
+- [docker-compose](https://docs.docker.com/compose/install/)
+- [gommit](https://github.com/antham/gommit) (if you want to contribute to the project)
+
+## Usage
+
+## Contributing
+
+Pull requests are welcomed.
+For more details, please refers to our [contributing file](.github/CONTRIBUTING/contributing.md).
+
+## License
+
+[MIT](./LICENSE)
