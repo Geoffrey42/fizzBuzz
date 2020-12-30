@@ -8,7 +8,11 @@ A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 
 - [Assignment](#assignment)
 - [Prerequisites](#prerequisites)
+- [Installation](#installation)
+  - [First time](#first-time)
+  - [Build](#build)
 - [Usage](#usage)
+- [Swagger](#swagger)
 - [Core logic](#core-logic)
 - [Contributing](#contributing)
 - [License](#license)
@@ -17,7 +21,7 @@ A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 
 ## Assignment
 
-The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by "fizz", all multiples of 5 by "buzz", and all multiples of 15 by "fizzbuzz".
+The iriginal fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by "fizz", all multiples of 5 by "buzz", and all multiples of 15 by "fizzbuzz".
 
 The output would look like this: **"1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,13,14,fizzbuzz,16,..."**.
 
@@ -49,7 +53,50 @@ The output would look like this: **"1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,1
 
 **Important note**: The specified versions are for information purposes only. They are the versions used to develop the project and not the minimum required to run it.
 
+## Installation
+
+### First time
+
+Clone the project:
+
+```bash
+git clone git@github.com:Geoffrey42/fizzBuzz.git
+cd fizzBuzz
+```
+
+Production branch is **main**, but default is **develop**.
+
+```bash
+git checkout main
+```
+
+### Build
+
+Fetch every dependencies using ```go get -v ./...```.
+
+Then to build **fizzbuzz-server**, run:
+
+```bash
+go install ./cmd/fizzbuzz-server
+```
+
+Run the server using any port you want. Feel free to check ```fizzbuzz-server --help```:
+
+```bash
+fizzbuzz-server --port=5000
+```
+
 ## Usage
+
+To perform some tests, you can use this Postman collection:
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/4a4f3a8f7e69dc307b88)
+
+## Swagger
+
+The server was built using [go-swagger](https://github.com/go-swagger/go-swagger). It's a Golang implementation of Swagger 2.0 specification. The server source code has been generated from this [swagger.yml](./swagger.yml).
+
+A Swagger UI documentation available at ```http://127.0.0.1:5000/docs#/fizzbuzz/get_api_fizzbuzz``` (IP + port may vary depending on your custom settings).
 
 ## Core logic
 
