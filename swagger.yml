@@ -4,17 +4,6 @@ info:
   description: The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by 'fizz', all multiples of 5 by 'buzz', and all multiples of 15 by 'fizzbuzz'. This server exposes two main endpoint, one to return the fizz-buzz string given some parameters and the other to return stats about the most used request. This API is part of LeBonCoin's technical test.
   title: A simple fizz-buzz REST server
   version: 1.0.0
-definitions:
-  error:
-    type: object
-    required:
-      - message
-    properties:
-      code:
-        type: integer
-        format: int
-      message:
-        type: string
 paths:
   /api/fizzbuzz:
     get:
@@ -59,10 +48,6 @@ paths:
             type: array
             items:
               type: string
-        500:
-          description: fizz-buzz server isn't available
-          schema:
-            $ref: "#/definitions/error"
 produces:
 - application/json
 schemes:

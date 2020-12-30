@@ -91,30 +91,7 @@ func init() {
                 "type": "string"
               }
             }
-          },
-          "500": {
-            "description": "fizz-buzz server isn't available",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
           }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "error": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int"
-        },
-        "message": {
-          "type": "string"
         }
       }
     }
@@ -194,30 +171,7 @@ func init() {
                 "type": "string"
               }
             }
-          },
-          "500": {
-            "description": "fizz-buzz server isn't available",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
           }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "error": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int"
-        },
-        "message": {
-          "type": "string"
         }
       }
     }

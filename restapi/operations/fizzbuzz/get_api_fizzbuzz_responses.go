@@ -9,8 +9,6 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
-
-	"github.com/Geoffrey42/fizzbuzz/models"
 )
 
 // GetAPIFizzbuzzOKCode is the HTTP code returned for type GetAPIFizzbuzzOK
@@ -57,49 +55,5 @@ func (o *GetAPIFizzbuzzOK) WriteResponse(rw http.ResponseWriter, producer runtim
 
 	if err := producer.Produce(rw, payload); err != nil {
 		panic(err) // let the recovery middleware deal with this
-	}
-}
-
-// GetAPIFizzbuzzInternalServerErrorCode is the HTTP code returned for type GetAPIFizzbuzzInternalServerError
-const GetAPIFizzbuzzInternalServerErrorCode int = 500
-
-/*GetAPIFizzbuzzInternalServerError fizz-buzz server isn't available
-
-swagger:response getApiFizzbuzzInternalServerError
-*/
-type GetAPIFizzbuzzInternalServerError struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewGetAPIFizzbuzzInternalServerError creates GetAPIFizzbuzzInternalServerError with default headers values
-func NewGetAPIFizzbuzzInternalServerError() *GetAPIFizzbuzzInternalServerError {
-
-	return &GetAPIFizzbuzzInternalServerError{}
-}
-
-// WithPayload adds the payload to the get Api fizzbuzz internal server error response
-func (o *GetAPIFizzbuzzInternalServerError) WithPayload(payload *models.Error) *GetAPIFizzbuzzInternalServerError {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the get Api fizzbuzz internal server error response
-func (o *GetAPIFizzbuzzInternalServerError) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *GetAPIFizzbuzzInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(500)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
 	}
 }
