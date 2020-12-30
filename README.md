@@ -63,16 +63,17 @@ import (
     "strings"
 )
 
-const start = 1
-const max = 100
+const start int64 = 1
+const max int64 = 100
+const base int = 10
 
-func doFizzBuzz(int1, int2, limit int, str1, str2 string) ([]string, error) {
-    result := strconv.Itoa(start)
+func DoFizzBuzz(int1, int2, limit int64, str1, str2 string) ([]string, error) {
+    result := strconv.FormatInt(start, base)
     separator := ","
 
     if limit < start || limit > max {
         return nil, errors.New(
-            "limit must be between" + result + " and " + strconv.Itoa(max))
+            "limit must be between" + result + " and " + strconv.FormatInt(max, base))
     }
 
     for i := 2; i <= limit; i++ {
@@ -83,7 +84,7 @@ func doFizzBuzz(int1, int2, limit int, str1, str2 string) ([]string, error) {
         } else if i%int2 == 0 {
             result += separator + str2
         } else {
-            result += separator + strconv.Itoa(i)
+            result += separator + strconv.FormatInt(i, base)
         }
     }
 
@@ -93,7 +94,7 @@ func doFizzBuzz(int1, int2, limit int, str1, str2 string) ([]string, error) {
 
 **Important note**: limit must be between 1 and 100.
 
-See actual function in [fizzbuzz.go](./fizzbuzz.go)
+See actual function in [fizzbuzz.go](./fb/fizzbuzz.go)
 
 ## Contributing
 
