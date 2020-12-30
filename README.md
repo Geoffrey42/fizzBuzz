@@ -2,6 +2,19 @@
 
 A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Assignment](#assignment)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+- [Core logic](#core-logic)
+- [Contributing](#contributing)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Assignment
 
 The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by "fizz", all multiples of 5 by "buzz", and all multiples of 15 by "fizzbuzz".
@@ -27,12 +40,13 @@ The output would look like this: **"1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,1
 
 ## Prerequisites
 
-- [make](https://www.gnu.org/software/make/manual/make.html)
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [docker](https://docs.docker.com/get-docker/)
-- [docker-compose](https://docs.docker.com/compose/install/)
-- [gommit](https://github.com/antham/gommit) (if you want to contribute to the project)
+- [make](https://www.gnu.org/software/make/manual/make.html) *version 3.81*
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) *version 2.26.2*
+- [docker](https://docs.docker.com/get-docker/) *version 20.10.0*
+- [docker-compose](https://docs.docker.com/compose/install/) *version 1.27.4*
+- [gommit](https://github.com/antham/gommit) (if you want to contribute to the project) *version 2.2.0*
 
+**Important note**: The specified versions are for information purposes only. They are the versions used to develop the project and not the minimum required to run it.
 ## Usage
 
 ## Core logic
