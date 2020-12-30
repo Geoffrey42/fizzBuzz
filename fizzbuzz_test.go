@@ -1,13 +1,21 @@
 package fizzbuzz
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestDoFizzBuzz(t *testing.T) {
 	t.Run("basic case: up to 16 limit with 'fizz' and 'buzz'", func(t *testing.T) {
 		got, _ := doFizzBuzz(3, 5, 16, "fizz", "buzz")
-		want := "1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,13,14,fizzbuzz,16"
+		want := []string{
+			"1", "2", "fizz", "4",
+			"buzz", "fizz", "7", "8",
+			"fizz", "buzz", "11", "fizz",
+			"13", "14", "fizzbuzz", "16",
+		}
 
-		if got != want {
+		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %s but want %s", got, want)
 		}
 	})

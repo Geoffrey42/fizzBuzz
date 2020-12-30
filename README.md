@@ -60,17 +60,18 @@ package fizzbuzz
 import (
     "errors"
     "strconv"
+    "strings"
 )
 
 const start = 1
 const max = 100
 
-func doFizzBuzz(int1, int2, limit int, str1, str2 string) (string, error) {
+func doFizzBuzz(int1, int2, limit int, str1, str2 string) ([]string, error) {
     result := strconv.Itoa(start)
     separator := ","
 
     if limit < start || limit > max {
-        return "", errors.New(
+        return nil, errors.New(
             "limit must be between" + result + " and " + strconv.Itoa(max))
     }
 
@@ -86,7 +87,7 @@ func doFizzBuzz(int1, int2, limit int, str1, str2 string) (string, error) {
         }
     }
 
-    return result, nil
+    return strings.Split(result, ","), nil
 }
 ```
 
