@@ -94,6 +94,56 @@ func init() {
           }
         }
       }
+    },
+    "/api/stats": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Fetch the most frequent request on '/api/fizzbuzz', its parameters and number of hits.",
+        "responses": {
+          "200": {
+            "description": "A statistics endpoint allowing users to know what the most frequent request has been.",
+            "schema": {
+              "$ref": "#/definitions/stat"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "stat": {
+      "type": "object",
+      "properties": {
+        "hit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int",
+          "readOnly": true
+        },
+        "int1": {
+          "type": "integer",
+          "format": "int"
+        },
+        "int2": {
+          "type": "integer",
+          "format": "int"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "str1": {
+          "type": "string"
+        },
+        "str2": {
+          "type": "string"
+        }
+      }
     }
   }
 }`))
@@ -172,6 +222,56 @@ func init() {
               }
             }
           }
+        }
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Fetch the most frequent request on '/api/fizzbuzz', its parameters and number of hits.",
+        "responses": {
+          "200": {
+            "description": "A statistics endpoint allowing users to know what the most frequent request has been.",
+            "schema": {
+              "$ref": "#/definitions/stat"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "stat": {
+      "type": "object",
+      "properties": {
+        "hit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int",
+          "readOnly": true
+        },
+        "int1": {
+          "type": "integer",
+          "format": "int"
+        },
+        "int2": {
+          "type": "integer",
+          "format": "int"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "str1": {
+          "type": "string"
+        },
+        "str2": {
+          "type": "string"
         }
       }
     }

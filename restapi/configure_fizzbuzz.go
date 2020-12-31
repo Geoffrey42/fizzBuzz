@@ -4,16 +4,47 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 
+	"github.com/Geoffrey42/fizzbuzz/fb"
+	"github.com/Geoffrey42/fizzbuzz/models"
+	"github.com/Geoffrey42/fizzbuzz/restapi/operations"
+	"github.com/Geoffrey42/fizzbuzz/restapi/operations/fizzbuzz"
+	"github.com/Geoffrey42/fizzbuzz/restapi/operations/stats"
+	"github.com/Geoffrey42/fizzbuzz/utils"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
-
-	"github.com/Geoffrey42/fizzbuzz/fb"
-	"github.com/Geoffrey42/fizzbuzz/restapi/operations"
-	"github.com/Geoffrey42/fizzbuzz/restapi/operations/fizzbuzz"
+	"github.com/go-redis/redis"
 )
+
+var client *redis.Client = redis.NewClient(&redis.Options{
+	Addr:     "localhost:6379",
+	Password: "",
+	DB:       0,
+})
+
+func increaseCounterMiddleware(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		limit, err := strconv.Atoi(r.URL.Query()["limit"][0])
+
+		if err == nil && limit >= 1 && limit <= 100 {
+			member := utils.BuildMemberFromParams(r.URL.Query())
+
+			err = client.ZIncrBy(utils.Key, 1, member).Err()
+
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		handler.ServeHTTP(w, r)
+	})
+}
 
 //go:generate swagger generate server --target ../../fizzBuzz --name Fizzbuzz --spec ../swagger.yml --principal interface{}
 
@@ -44,9 +75,39 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 		return fizzbuzz.NewGetAPIFizzbuzzOK().WithPayload(res)
 	})
 
+	api.StatsGetAPIStatsHandler = stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
+		val, err := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
+
+		if err != nil {
+			panic(err)
+		}
+
+		res := models.Stat{}
+
+		if str, ok := val[0].Member.(string); ok {
+			p := strings.Split(str, "-")
+			res.Hit = int64(val[0].Score)
+			res.Int1, _ = strconv.ParseInt(p[0], 10, 64)
+			res.Int2, _ = strconv.ParseInt(p[1], 10, 64)
+			res.Limit, _ = strconv.ParseInt(p[2], 10, 64)
+			res.Str1 = p[3]
+			res.Str2 = p[4]
+		}
+		return stats.NewGetAPIStatsOK().WithPayload(&res)
+	})
+
+	api.AddMiddlewareFor("GET", "/api/fizzbuzz", increaseCounterMiddleware)
+
 	if api.FizzbuzzGetAPIFizzbuzzHandler == nil {
 		api.FizzbuzzGetAPIFizzbuzzHandler = fizzbuzz.GetAPIFizzbuzzHandlerFunc(func(params fizzbuzz.GetAPIFizzbuzzParams) middleware.Responder {
 			return middleware.NotImplemented("operation fizzbuzz.GetAPIFizzbuzz has not yet been implemented")
+		})
+	}
+
+	if api.StatsGetAPIStatsHandler == nil {
+		api.StatsGetAPIStatsHandler = stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
+			fmt.Println("here")
+			return middleware.NotImplemented("operation stats.GetAPIStats has not yet been implemented")
 		})
 	}
 

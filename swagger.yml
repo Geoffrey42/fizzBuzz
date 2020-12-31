@@ -4,7 +4,41 @@ info:
   description: The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by 'fizz', all multiples of 5 by 'buzz', and all multiples of 15 by 'fizzbuzz'. This server exposes two main endpoint, one to return the fizz-buzz string given some parameters and the other to return stats about the most used request. This API is part of LeBonCoin's technical test.
   title: A simple fizz-buzz REST server
   version: 1.0.0
+definitions:
+  stat:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+        readOnly: true
+      int1:
+        type: integer
+        format: int
+      int2:
+        type: integer
+        format: int
+      limit:
+        type: integer
+        format: int
+      hit:
+        type: integer
+        format: int
+      str1:
+        type: string
+      str2:
+        type: string
 paths:
+  /api/stats:
+    get:
+      summary: Fetch the most frequent request on '/api/fizzbuzz', its parameters and number of hits.
+      tags:
+        - "stats"
+      responses:
+        200:
+          description: A statistics endpoint allowing users to know what the most frequent request has been.
+          schema:
+            $ref: "#/definitions/stat"
   /api/fizzbuzz:
     get:
       summary: Perform fizz-buzz given specific parameters.
