@@ -1,4 +1,4 @@
-package stats
+package utils
 
 // Key is the Redis Sorted Set storing the request stats
 const Key string = "top-requests"
