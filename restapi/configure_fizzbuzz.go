@@ -4,10 +4,14 @@ package restapi
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-redis/redis"
 
 	"github.com/Geoffrey42/fizzbuzz/fb"
 	"github.com/Geoffrey42/fizzbuzz/models"
@@ -15,10 +19,6 @@ import (
 	"github.com/Geoffrey42/fizzbuzz/restapi/operations/fizzbuzz"
 	"github.com/Geoffrey42/fizzbuzz/restapi/operations/stats"
 	"github.com/Geoffrey42/fizzbuzz/utils"
-	"github.com/go-openapi/errors"
-	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/go-redis/redis"
 )
 
 var client *redis.Client = redis.NewClient(&redis.Options{
@@ -103,10 +103,8 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 			return middleware.NotImplemented("operation fizzbuzz.GetAPIFizzbuzz has not yet been implemented")
 		})
 	}
-
 	if api.StatsGetAPIStatsHandler == nil {
 		api.StatsGetAPIStatsHandler = stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
-			fmt.Println("here")
 			return middleware.NotImplemented("operation stats.GetAPIStats has not yet been implemented")
 		})
 	}
