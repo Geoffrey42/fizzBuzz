@@ -8,10 +8,6 @@ definitions:
   stat:
     type: object
     properties:
-      id:
-        type: integer
-        format: int
-        readOnly: true
       int1:
         type: integer
         format: int
@@ -28,6 +24,14 @@ definitions:
         type: string
       str2:
         type: string
+  error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int
+      message:
+        type: string
 paths:
   /api/stats:
     get:
@@ -39,6 +43,14 @@ paths:
           description: A statistics endpoint allowing users to know what the most frequent request has been.
           schema:
             $ref: "#/definitions/stat"
+        404:
+          description: No stored request can be found.
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: Database isn't available.
+          schema:
+            $ref: "#/definitions/error"
   /api/fizzbuzz:
     get:
       summary: Perform fizz-buzz given specific parameters.
@@ -50,13 +62,13 @@ paths:
           in: query
           type: integer
           format: int
-          description: A number whose multiples will be replaced by str1
+          description: A number whose multiples will be replaced by str1.
         - name: int2
           required: true
           in: query
           type: integer
           format: int
-          description: A number whose multiples will be replaced by str2
+          description: A number whose multiples will be replaced by str2.
         - name: limit
           required: true
           minimum: 1
@@ -70,14 +82,16 @@ paths:
           in: query
           type: string
           minLength: 1
+          description: String that will replace int1's multiples.
         - name: str2
           required: true
           in: query
           type: string
           minLength: 1
+          description: String that will replace int2's multiples.
       responses:
         200:
-          description: fizz-buzz-like string based on given parameters
+          description: fizz-buzz-like string based on given parameters.
           schema:
             type: array
             items:

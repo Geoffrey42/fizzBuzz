@@ -14,7 +14,7 @@ import (
 // GetAPIFizzbuzzOKCode is the HTTP code returned for type GetAPIFizzbuzzOK
 const GetAPIFizzbuzzOKCode int = 200
 
-/*GetAPIFizzbuzzOK fizz-buzz-like string based on given parameters
+/*GetAPIFizzbuzzOK fizz-buzz-like string based on given parameters.
 
 swagger:response getApiFizzbuzzOK
 */

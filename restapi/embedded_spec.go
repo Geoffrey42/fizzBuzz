@@ -44,7 +44,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str1",
+            "description": "A number whose multiples will be replaced by str1.",
             "name": "int1",
             "in": "query",
             "required": true
@@ -52,7 +52,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str2",
+            "description": "A number whose multiples will be replaced by str2.",
             "name": "int2",
             "in": "query",
             "required": true
@@ -70,6 +70,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int1's multiples.",
             "name": "str1",
             "in": "query",
             "required": true
@@ -77,6 +78,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int2's multiples.",
             "name": "str2",
             "in": "query",
             "required": true
@@ -84,7 +86,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "fizz-buzz-like string based on given parameters",
+            "description": "fizz-buzz-like string based on given parameters.",
             "schema": {
               "type": "array",
               "items": {
@@ -107,23 +109,42 @@ func init() {
             "schema": {
               "$ref": "#/definitions/stat"
             }
+          },
+          "404": {
+            "description": "No stored request can be found.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "500": {
+            "description": "Database isn't available.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "stat": {
       "type": "object",
       "properties": {
         "hit": {
           "type": "integer",
           "format": "int"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int",
-          "readOnly": true
         },
         "int1": {
           "type": "integer",
@@ -174,7 +195,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str1",
+            "description": "A number whose multiples will be replaced by str1.",
             "name": "int1",
             "in": "query",
             "required": true
@@ -182,7 +203,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str2",
+            "description": "A number whose multiples will be replaced by str2.",
             "name": "int2",
             "in": "query",
             "required": true
@@ -200,6 +221,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int1's multiples.",
             "name": "str1",
             "in": "query",
             "required": true
@@ -207,6 +229,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int2's multiples.",
             "name": "str2",
             "in": "query",
             "required": true
@@ -214,7 +237,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "fizz-buzz-like string based on given parameters",
+            "description": "fizz-buzz-like string based on given parameters.",
             "schema": {
               "type": "array",
               "items": {
@@ -237,23 +260,42 @@ func init() {
             "schema": {
               "$ref": "#/definitions/stat"
             }
+          },
+          "404": {
+            "description": "No stored request can be found.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "500": {
+            "description": "Database isn't available.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "stat": {
       "type": "object",
       "properties": {
         "hit": {
           "type": "integer",
           "format": "int"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int",
-          "readOnly": true
         },
         "int1": {
           "type": "integer",

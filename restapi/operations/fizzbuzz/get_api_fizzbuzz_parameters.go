@@ -32,12 +32,12 @@ type GetAPIFizzbuzzParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*A number whose multiples will be replaced by str1
+	/*A number whose multiples will be replaced by str1.
 	  Required: true
 	  In: query
 	*/
 	Int1 int64
-	/*A number whose multiples will be replaced by str2
+	/*A number whose multiples will be replaced by str2.
 	  Required: true
 	  In: query
 	*/
@@ -49,13 +49,13 @@ type GetAPIFizzbuzzParams struct {
 	  In: query
 	*/
 	Limit int64
-	/*
+	/*String that will replace int1's multiples.
 	  Required: true
 	  Min Length: 1
 	  In: query
 	*/
 	Str1 string
-	/*
+	/*String that will replace int2's multiples.
 	  Required: true
 	  Min Length: 1
 	  In: query

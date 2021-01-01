@@ -34,12 +34,7 @@ func increaseCounterMiddleware(handler http.Handler) http.Handler {
 
 		if err == nil && limit >= 1 && limit <= 100 {
 			member := utils.BuildMemberFromParams(r.URL.Query())
-
-			err = client.ZIncrBy(utils.Key, 1, member).Err()
-
-			if err != nil {
-				panic(err)
-			}
+			client.ZIncrBy(utils.Key, 1, member)
 		}
 
 		handler.ServeHTTP(w, r)
@@ -76,11 +71,15 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 	})
 
 	api.StatsGetAPIStatsHandler = stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
-		val, err := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
-
+		ok, err := client.Exists(utils.Key).Result()
 		if err != nil {
-			panic(err)
+			errorMessage := models.Error{Code: 500, Message: "Database isn't available: " + err.Error()}
+			return stats.NewGetAPIStatsInternalServerError().WithPayload(&errorMessage)
+		} else if ok == 0 {
+			errorMessage := models.Error{Code: 404, Message: "No stored request can be found."}
+			return stats.NewGetAPIStatsNotFound().WithPayload(&errorMessage)
 		}
+		val, _ := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
 
 		res := models.Stat{}
 
