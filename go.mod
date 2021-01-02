@@ -10,6 +10,7 @@ require (
 	github.com/go-openapi/strfmt v0.19.11
 	github.com/go-openapi/swag v0.19.12
 	github.com/go-openapi/validate v0.20.0
+	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/stretchr/objx v0.2.0 // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b

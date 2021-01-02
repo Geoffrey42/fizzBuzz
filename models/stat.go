@@ -10,25 +10,37 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// Error error
+// Stat stat
 //
-// swagger:model error
-type Error struct {
+// swagger:model stat
+type Stat struct {
 
-	// code
-	Code int64 `json:"code,omitempty"`
+	// hit
+	Hit int64 `json:"hit,omitempty"`
 
-	// message
-	Message string `json:"message,omitempty"`
+	// int1
+	Int1 int64 `json:"int1,omitempty"`
+
+	// int2
+	Int2 int64 `json:"int2,omitempty"`
+
+	// limit
+	Limit int64 `json:"limit,omitempty"`
+
+	// str1
+	Str1 string `json:"str1,omitempty"`
+
+	// str2
+	Str2 string `json:"str2,omitempty"`
 }
 
-// Validate validates this error
-func (m *Error) Validate(formats strfmt.Registry) error {
+// Validate validates this stat
+func (m *Stat) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *Error) MarshalBinary() ([]byte, error) {
+func (m *Stat) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -36,8 +48,8 @@ func (m *Error) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *Error) UnmarshalBinary(b []byte) error {
-	var res Error
+func (m *Stat) UnmarshalBinary(b []byte) error {
+	var res Stat
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

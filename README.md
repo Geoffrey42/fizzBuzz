@@ -88,7 +88,12 @@ fizzbuzz-server --port=5000
 
 ## Usage
 
-To perform some tests, you can use this Postman collection:
+The fizzbuzz server exposes two endpoints:
+
+- **/api/fizzbuzz**: Hitting this endpoint and the server will perform a fizzbuzz according to the specified query parameters (to learn more about the parameters see the Swagger UI info in the [Swagger](#swagger) section).
+- **/api/stats**: This endpoint returns the top fizzbuzz request, its query parameters and the number of hits.
+
+To perform some tests on your running configuration you can still use ```curl``` but here is a Postman collection gathering the most important requests with some example:
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/4a4f3a8f7e69dc307b88)
 
@@ -96,7 +101,7 @@ To perform some tests, you can use this Postman collection:
 
 The server was built using [go-swagger](https://github.com/go-swagger/go-swagger). It's a Golang implementation of Swagger 2.0 specification. The server source code has been generated from this [swagger.yml](./swagger.yml).
 
-A Swagger UI documentation available at ```http://127.0.0.1:5000/docs#/fizzbuzz/get_api_fizzbuzz``` (IP + port may vary depending on your custom settings).
+A Swagger UI documentation available at ```http://127.0.0.1:5000/docs``` (IP + port may vary depending on your custom settings).
 
 ## Core logic
 

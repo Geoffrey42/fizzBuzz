@@ -44,7 +44,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str1",
+            "description": "A number whose multiples will be replaced by str1.",
             "name": "int1",
             "in": "query",
             "required": true
@@ -52,7 +52,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str2",
+            "description": "A number whose multiples will be replaced by str2.",
             "name": "int2",
             "in": "query",
             "required": true
@@ -70,6 +70,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int1's multiples.",
             "name": "str1",
             "in": "query",
             "required": true
@@ -77,6 +78,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int2's multiples.",
             "name": "str2",
             "in": "query",
             "required": true
@@ -84,7 +86,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "fizz-buzz-like string based on given parameters",
+            "description": "fizz-buzz-like string based on given parameters.",
             "schema": {
               "type": "array",
               "items": {
@@ -92,6 +94,75 @@ func init() {
               }
             }
           }
+        }
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Fetch the most frequent request on '/api/fizzbuzz', its parameters and number of hits.",
+        "responses": {
+          "200": {
+            "description": "A statistics endpoint allowing users to know what the most frequent request has been.",
+            "schema": {
+              "$ref": "#/definitions/stat"
+            }
+          },
+          "404": {
+            "description": "No stored request can be found.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "500": {
+            "description": "Database isn't available.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "stat": {
+      "type": "object",
+      "properties": {
+        "hit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "int1": {
+          "type": "integer",
+          "format": "int"
+        },
+        "int2": {
+          "type": "integer",
+          "format": "int"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "str1": {
+          "type": "string"
+        },
+        "str2": {
+          "type": "string"
         }
       }
     }
@@ -124,7 +195,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str1",
+            "description": "A number whose multiples will be replaced by str1.",
             "name": "int1",
             "in": "query",
             "required": true
@@ -132,7 +203,7 @@ func init() {
           {
             "type": "integer",
             "format": "int",
-            "description": "A number whose multiples will be replaced by str2",
+            "description": "A number whose multiples will be replaced by str2.",
             "name": "int2",
             "in": "query",
             "required": true
@@ -150,6 +221,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int1's multiples.",
             "name": "str1",
             "in": "query",
             "required": true
@@ -157,6 +229,7 @@ func init() {
           {
             "minLength": 1,
             "type": "string",
+            "description": "String that will replace int2's multiples.",
             "name": "str2",
             "in": "query",
             "required": true
@@ -164,7 +237,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "fizz-buzz-like string based on given parameters",
+            "description": "fizz-buzz-like string based on given parameters.",
             "schema": {
               "type": "array",
               "items": {
@@ -172,6 +245,75 @@ func init() {
               }
             }
           }
+        }
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Fetch the most frequent request on '/api/fizzbuzz', its parameters and number of hits.",
+        "responses": {
+          "200": {
+            "description": "A statistics endpoint allowing users to know what the most frequent request has been.",
+            "schema": {
+              "$ref": "#/definitions/stat"
+            }
+          },
+          "404": {
+            "description": "No stored request can be found.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "500": {
+            "description": "Database isn't available.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "stat": {
+      "type": "object",
+      "properties": {
+        "hit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "int1": {
+          "type": "integer",
+          "format": "int"
+        },
+        "int2": {
+          "type": "integer",
+          "format": "int"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int"
+        },
+        "str1": {
+          "type": "string"
+        },
+        "str2": {
+          "type": "string"
         }
       }
     }

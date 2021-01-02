@@ -4,7 +4,53 @@ info:
   description: The original fizz-buzz consists in writing all numbers from 1 to 100, and just replacing all multiples of 3 by 'fizz', all multiples of 5 by 'buzz', and all multiples of 15 by 'fizzbuzz'. This server exposes two main endpoint, one to return the fizz-buzz string given some parameters and the other to return stats about the most used request. This API is part of LeBonCoin's technical test.
   title: A simple fizz-buzz REST server
   version: 1.0.0
+definitions:
+  stat:
+    type: object
+    properties:
+      int1:
+        type: integer
+        format: int
+      int2:
+        type: integer
+        format: int
+      limit:
+        type: integer
+        format: int
+      hit:
+        type: integer
+        format: int
+      str1:
+        type: string
+      str2:
+        type: string
+  error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int
+      message:
+        type: string
 paths:
+  /api/stats:
+    get:
+      summary: Fetch the most frequent request on '/api/fizzbuzz', its parameters and number of hits.
+      tags:
+        - "stats"
+      responses:
+        200:
+          description: A statistics endpoint allowing users to know what the most frequent request has been.
+          schema:
+            $ref: "#/definitions/stat"
+        404:
+          description: No stored request can be found.
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: Database isn't available.
+          schema:
+            $ref: "#/definitions/error"
   /api/fizzbuzz:
     get:
       summary: Perform fizz-buzz given specific parameters.
@@ -16,13 +62,13 @@ paths:
           in: query
           type: integer
           format: int
-          description: A number whose multiples will be replaced by str1
+          description: A number whose multiples will be replaced by str1.
         - name: int2
           required: true
           in: query
           type: integer
           format: int
-          description: A number whose multiples will be replaced by str2
+          description: A number whose multiples will be replaced by str2.
         - name: limit
           required: true
           minimum: 1
@@ -36,14 +82,16 @@ paths:
           in: query
           type: string
           minLength: 1
+          description: String that will replace int1's multiples.
         - name: str2
           required: true
           in: query
           type: string
           minLength: 1
+          description: String that will replace int2's multiples.
       responses:
         200:
-          description: fizz-buzz-like string based on given parameters
+          description: fizz-buzz-like string based on given parameters.
           schema:
             type: array
             items:

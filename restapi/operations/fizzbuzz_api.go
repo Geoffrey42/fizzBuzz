@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"github.com/Geoffrey42/fizzbuzz/restapi/operations/fizzbuzz"
+	"github.com/Geoffrey42/fizzbuzz/restapi/operations/stats"
 )
 
 // NewFizzbuzzAPI creates a new Fizzbuzz instance
@@ -46,6 +47,9 @@ func NewFizzbuzzAPI(spec *loads.Document) *FizzbuzzAPI {
 
 		FizzbuzzGetAPIFizzbuzzHandler: fizzbuzz.GetAPIFizzbuzzHandlerFunc(func(params fizzbuzz.GetAPIFizzbuzzParams) middleware.Responder {
 			return middleware.NotImplemented("operation fizzbuzz.GetAPIFizzbuzz has not yet been implemented")
+		}),
+		StatsGetAPIStatsHandler: stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
+			return middleware.NotImplemented("operation stats.GetAPIStats has not yet been implemented")
 		}),
 	}
 }
@@ -83,6 +87,8 @@ type FizzbuzzAPI struct {
 
 	// FizzbuzzGetAPIFizzbuzzHandler sets the operation handler for the get API fizzbuzz operation
 	FizzbuzzGetAPIFizzbuzzHandler fizzbuzz.GetAPIFizzbuzzHandler
+	// StatsGetAPIStatsHandler sets the operation handler for the get API stats operation
+	StatsGetAPIStatsHandler stats.GetAPIStatsHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -161,6 +167,9 @@ func (o *FizzbuzzAPI) Validate() error {
 
 	if o.FizzbuzzGetAPIFizzbuzzHandler == nil {
 		unregistered = append(unregistered, "fizzbuzz.GetAPIFizzbuzzHandler")
+	}
+	if o.StatsGetAPIStatsHandler == nil {
+		unregistered = append(unregistered, "stats.GetAPIStatsHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -254,6 +263,10 @@ func (o *FizzbuzzAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/api/fizzbuzz"] = fizzbuzz.NewGetAPIFizzbuzz(o.context, o.FizzbuzzGetAPIFizzbuzzHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/api/stats"] = stats.NewGetAPIStats(o.context, o.StatsGetAPIStatsHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
