@@ -9,6 +9,7 @@ before_install:
     - wget -O /tmp/gommit https://github.com/antham/gommit/releases/download/v2.2.0/gommit_linux_386
     - chmod 777 /tmp/gommit
     - chmod 777 ./coverage.sh
+    - go get -t -v ./...
 jobs:
   include:
     - name: "Check commits"
