@@ -3,5 +3,19 @@ services:
   redis:
     image: redis:5.0.9-alpine
     ports:
-      - "6379:6379"
-    container_name: fb-redis
+      - "${REDIS_PORT}:6379"
+    container_name: ${REDIS_HOSTNAME}
+  api:
+    build:
+      context: .
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    image: fb-api-img
+    environment:
+      - REDIS_HOSTNAME=${REDIS_HOSTNAME}
+    ports:
+      - "${API_PORT}:5000"
+    depends_on:
+      - redis
+    container_name: fb-api

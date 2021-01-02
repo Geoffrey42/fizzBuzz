@@ -5,6 +5,7 @@ package restapi
 import (
 	"crypto/tls"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -22,7 +23,7 @@ import (
 )
 
 var client *redis.Client = redis.NewClient(&redis.Options{
-	Addr:     "localhost:6379",
+	Addr:     os.Getenv("REDIS_HOSTNAME") + ":6379",
 	Password: "",
 	DB:       0,
 })

@@ -1,0 +1,16 @@
+version: "3"
+services:
+  redis:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "1"
+    restart: always
+  api:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "1"
+    restart: always
