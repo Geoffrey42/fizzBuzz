@@ -20,4 +20,4 @@ branches:
   only:
   - main
   - develop
-  - ci/Add_CI_CD_pipeline
+  - feature/Add_CI/CD
