@@ -10,7 +10,7 @@ A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [First time](#first-time)
-  - [Build](#build)
+  - [Build & Run](#build--run)
 - [Usage](#usage)
 - [Swagger](#swagger)
 - [Core logic](#core-logic)
@@ -64,26 +64,47 @@ git clone git@github.com:Geoffrey42/fizzBuzz.git
 cd fizzBuzz
 ```
 
-Production branch is **main**, but default is **develop**.
+Production branch is **main**, but default is **develop**. Choose accordingly to your needs.
 
 ```bash
 git checkout main
 ```
 
-### Build
-
-Fetch every dependencies using ```go get -v ./...```.
-
-Then to build **fizzbuzz-server**, run:
+Create an **.env** file based on this [.env.sample](./.env.sample):
 
 ```bash
-go install ./cmd/fizzbuzz-server
+HTTP_PROXY=
+HTTPS_PROXY=
+REDIS_HOSTNAME=
+REDIS_PORT=
+API_PORT=
 ```
 
-Run the server using any port you want. Feel free to check ```fizzbuzz-server --help```:
+Fill it according to your configuration needs.
+
+### Build & Run
+
+To build and run the server:
 
 ```bash
-fizzbuzz-server --port=5000
+make # for production
+```
+
+or
+
+```bash
+make dev # for dev (no restart always and log rotation)
+```
+
+Check that everything is correct by running:
+
+```bash
+$ make ps
+docker-compose ps
+  Name                Command               State           Ports         
+--------------------------------------------------------------------------
+fb-api     /bin/sh -c ./fizzbuzz-serv ...   Up      0.0.0.0:5000->5000/tcp
+fb-redis   docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/tcp
 ```
 
 ## Usage
