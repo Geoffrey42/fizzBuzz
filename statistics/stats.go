@@ -1,4 +1,5 @@
-package utils
+// Package statistics provides helpuf functions to handle redis Sorted Set interactions
+package statistics
 
 import (
 	"strconv"
