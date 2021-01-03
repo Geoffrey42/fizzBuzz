@@ -18,6 +18,7 @@ A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 - [Usage](#usage)
 - [Swagger](#swagger)
 - [Core logic](#core-logic)
+- [Monitoring](#monitoring)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -181,6 +182,16 @@ func DoFizzBuzz(int1, int2, limit int64, str1, str2 string) ([]string, error) {
 **Important note**: limit must be between 1 and 100.
 
 See actual function in [fizzbuzz.go](./fb/fizzbuzz.go)
+
+## Monitoring
+
+The redis container is essential to get **/api/stats** endpoint working. Thus, a grafana dashboard is available to monitor the database.
+
+Go to your grafana instance (according to your **.env** settings). Be aware that on first log-in, both default username and password are **admin**.
+
+Then search for **Redis Dashboard for Prometheus Redis Exporter 1.x** dashboard. See capture below.
+
+![redis_exporter_grafana_dashboard](./assets/redis_exporter_grafana_dashboard.png)
 
 ## Contributing
 
