@@ -32,3 +32,17 @@ services:
       - "-redis.addr"
       - "redis://${REDIS_HOSTNAME}:6379"
     container_name: fb-redis_exporter
+
+  prometheus:
+    build:
+      context: ./prometheus
+    ports:
+      - "${PROMETHEUS_PORT}:9090"
+    volumes:
+      - prometheus-storage:/prometheus
+    depends_on:
+      - redis_exporter
+    container_name: fb-prometheus
+
+volumes:
+  prometheus-storage:

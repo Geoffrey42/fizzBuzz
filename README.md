@@ -83,6 +83,7 @@ API_PORT=
 REDIS_HOSTNAME=
 REDIS_PORT=
 REDIS_EXP_PORT=
+PROMETHEUS_PORT=
 ```
 
 Fill it according to your configuration needs.

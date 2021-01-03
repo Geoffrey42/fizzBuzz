@@ -15,7 +15,8 @@ services:
         max-size: "200k"
         max-file: "1"
     restart: always
-  api:
+
+  prometheus:
     logging:
       driver: "json-file"
       options:
