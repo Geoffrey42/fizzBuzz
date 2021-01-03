@@ -56,7 +56,6 @@ The output would look like this: **"1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,1
 - [docker](https://docs.docker.com/get-docker/) *version 20.10.0*
 - [docker-compose](https://docs.docker.com/compose/install/) *version 1.27.4*
 - [gommit](https://github.com/antham/gommit) (if you want to contribute to the project) *version 2.2.0*
-- go-swagger *version 0.25.0*
 
 **Important note**: The specified versions are for information purposes only. They are the versions used to develop the project and not the minimum required to run it.
 
