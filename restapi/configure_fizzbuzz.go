@@ -22,6 +22,8 @@ import (
 	"github.com/Geoffrey42/fizzbuzz/utils"
 )
 
+const forbiddenChars string = "-"
+
 var client *redis.Client = redis.NewClient(&redis.Options{
 	Addr:     os.Getenv("REDIS_HOSTNAME") + ":6379",
 	Password: "",
@@ -67,6 +69,10 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.FizzbuzzGetAPIFizzbuzzHandler = fizzbuzz.GetAPIFizzbuzzHandlerFunc(func(params fizzbuzz.GetAPIFizzbuzzParams) middleware.Responder {
+		if strings.Contains(params.Str1, forbiddenChars) || strings.Contains(params.Str2, forbiddenChars) {
+			errorMessage := models.Error{Code: 422, Message: "Request can't contain any of the following characters: " + forbiddenChars}
+			return fizzbuzz.NewGetAPIFizzbuzzUnprocessableEntity().WithPayload(&errorMessage)
+		}
 		res, _ := fb.DoFizzBuzz(params.Int1, params.Int2, params.Limit, params.Str1, params.Str2)
 		return fizzbuzz.NewGetAPIFizzbuzzOK().WithPayload(res)
 	})

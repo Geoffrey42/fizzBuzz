@@ -86,12 +86,18 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "fizz-buzz-like string based on given parameters.",
+            "description": "Fizz-buzz-like string based on given parameters.",
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
+            }
+          },
+          "422": {
+            "description": "Request contains illegal characters",
+            "schema": {
+              "$ref": "#/definitions/error"
             }
           }
         }
@@ -237,12 +243,18 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "fizz-buzz-like string based on given parameters.",
+            "description": "Fizz-buzz-like string based on given parameters.",
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               }
+            }
+          },
+          "422": {
+            "description": "Request contains illegal characters",
+            "schema": {
+              "$ref": "#/definitions/error"
             }
           }
         }
