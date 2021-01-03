@@ -1,10 +1,5 @@
 version: "3"
 services:
-  redis:
-    image: redis:5.0.9-alpine
-    ports:
-      - "${REDIS_PORT}:6379"
-    container_name: ${REDIS_HOSTNAME}
   api:
     build:
       context: .
@@ -19,3 +14,21 @@ services:
     depends_on:
       - redis
     container_name: fb-api
+
+  redis:
+    image: redis:5.0.9-alpine
+    ports:
+      - "${REDIS_PORT}:6379"
+    container_name: ${REDIS_HOSTNAME}
+
+  redis_exporter:
+    image: oliver006/redis_exporter:v1.15.0-alpine
+    ports:
+      - "${REDIS_EXP_PORT}:9121"
+    depends_on:
+      - redis
+    entrypoint:
+      - "./redis_exporter"
+      - "-redis.addr"
+      - "redis://${REDIS_HOSTNAME}:6379"
+    container_name: fb-redis_exporter

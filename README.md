@@ -79,9 +79,10 @@ Create an **.env** file based on this [.env.sample](./.env.sample):
 ```bash
 HTTP_PROXY=
 HTTPS_PROXY=
+API_PORT=
 REDIS_HOSTNAME=
 REDIS_PORT=
-API_PORT=
+REDIS_EXP_PORT=
 ```
 
 Fill it according to your configuration needs.
