@@ -27,6 +27,7 @@ _Put an  in the boxes that apply_
 - [ ] CI/CD related changes
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Refactor
+- [ ] Documentation
 
 ## Checklist
 
