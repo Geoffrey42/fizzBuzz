@@ -19,7 +19,7 @@ import (
 	"github.com/Geoffrey42/fizzbuzz/restapi/operations"
 	"github.com/Geoffrey42/fizzbuzz/restapi/operations/fizzbuzz"
 	"github.com/Geoffrey42/fizzbuzz/restapi/operations/stats"
-	"github.com/Geoffrey42/fizzbuzz/utils"
+	"github.com/Geoffrey42/fizzbuzz/statistics"
 )
 
 const forbiddenChars string = "-"
@@ -36,8 +36,8 @@ func increaseCounterMiddleware(handler http.Handler) http.Handler {
 		limit, err := strconv.Atoi(r.URL.Query()["limit"][0])
 
 		if err == nil && limit >= 1 && limit <= 100 {
-			member := utils.BuildMemberFromParams(r.URL.Query())
-			client.ZIncrBy(utils.Key, 1, member)
+			member := statistics.BuildMemberFromParams(r.URL.Query())
+			client.ZIncrBy(statistics.Key, 1, member)
 		}
 
 		handler.ServeHTTP(w, r)
@@ -78,7 +78,7 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 	})
 
 	api.StatsGetAPIStatsHandler = stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
-		ok, err := client.Exists(utils.Key).Result()
+		ok, err := client.Exists(statistics.Key).Result()
 		if err != nil {
 			errorMessage := models.Error{Code: 500, Message: "Database isn't available: " + err.Error()}
 			return stats.NewGetAPIStatsInternalServerError().WithPayload(&errorMessage)
@@ -86,20 +86,14 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 			errorMessage := models.Error{Code: 404, Message: "No stored request can be found."}
 			return stats.NewGetAPIStatsNotFound().WithPayload(&errorMessage)
 		}
-		val, _ := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
+		topRequests, _ := client.ZRevRangeWithScores(statistics.Key, 0, -1).Result()
 
-		res := models.Stat{}
-
-		if str, ok := val[0].Member.(string); ok {
-			p := strings.Split(str, "-")
-			res.Hit = int64(val[0].Score)
-			res.Int1, _ = strconv.ParseInt(p[0], 10, 64)
-			res.Int2, _ = strconv.ParseInt(p[1], 10, 64)
-			res.Limit, _ = strconv.ParseInt(p[2], 10, 64)
-			res.Str1 = p[3]
-			res.Str2 = p[4]
+		topRequest, errorMessage := statistics.GetTopRequestFromList(topRequests)
+		if errorMessage != nil {
+			return stats.NewGetAPIStatsNotFound().WithPayload(errorMessage)
 		}
-		return stats.NewGetAPIStatsOK().WithPayload(&res)
+
+		return stats.NewGetAPIStatsOK().WithPayload(topRequest)
 	})
 
 	api.AddMiddlewareFor("GET", "/api/fizzbuzz", increaseCounterMiddleware)

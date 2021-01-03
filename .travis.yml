@@ -23,7 +23,7 @@ jobs:
   - stage: test
     name: Check commits
     script: perl .test-branch-commit-messages-in-travis.pl
-  - script: cd fb/ && go test && cd ../utils && go test
+  - script: cd fb/ && go test && cd ../statistics && go test
     name: Unit tests
   - script: "./.coverage.sh"
     name: Code coverage
