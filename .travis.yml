@@ -25,7 +25,7 @@ jobs:
     - name: "Validate swagger.yml"
       script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger validate ./swagger.yml
     - name: "Build"
-      script: "docker-compose up -d"
+      script: "make"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
