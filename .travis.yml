@@ -34,4 +34,3 @@ branches:
   only:
   - main
   - develop
-  - feature/Add_CI/CD
