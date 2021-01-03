@@ -29,8 +29,8 @@ jobs:
   - script: "./.coverage.sh"
     name: Code coverage
   - script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger
-    name: Validate swagger.yml
       validate ./swagger.yml
+    name: Validate swagger.yml
 
   - stage: build
     name: Build
