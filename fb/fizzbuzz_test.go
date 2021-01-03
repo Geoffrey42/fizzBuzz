@@ -44,8 +44,8 @@ func assertError(t *testing.T, err error) {
 
 // This is a little example of how to use DoFizzBuzz function
 func ExampleDoFizzBuzz() {
-	res, _ := DoFizzBuzz(3, 5, 0, "fizz", "buzz")
+	res, _ := DoFizzBuzz(3, 5, 16, "fizz", "buzz")
 
 	fmt.Println(res)
-	// Output: ["1", "2", "fizz", "4", "buzz", "fizz", "7", "8", "fizz", "buzz", "11", "fizz", "13", "14", "fizzbuzz", "16"]
+	// Output: [1 2 fizz 4 buzz fizz 7 8 fizz buzz 11 fizz 13 14 fizzbuzz 16]
 }

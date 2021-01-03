@@ -5,3 +5,4 @@ Makefile
 .hooks
 .env.sample
 .gommit.toml
+coverage.txt

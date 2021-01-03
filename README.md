@@ -1,5 +1,9 @@
 # fizzBuzz
 
+[![Build Status](https://travis-ci.com/Geoffrey42/fizzBuzz.svg?token=XpPVtxxuZC8HAHhhouZ5&branch=develop)](https://travis-ci.com/Geoffrey42/fizzBuzz)
+[![codecov](https://codecov.io/gh/Geoffrey42/fizzBuzz/branch/develop/graph/badge.svg?token=7l15xpFfsz)](https://codecov.io/gh/Geoffrey42/fizzBuzz)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
