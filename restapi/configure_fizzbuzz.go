@@ -86,20 +86,14 @@ func configureAPI(api *operations.FizzbuzzAPI) http.Handler {
 			errorMessage := models.Error{Code: 404, Message: "No stored request can be found."}
 			return stats.NewGetAPIStatsNotFound().WithPayload(&errorMessage)
 		}
-		val, _ := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
+		topRequests, _ := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
 
-		res := models.Stat{}
-
-		if str, ok := val[0].Member.(string); ok {
-			p := strings.Split(str, "-")
-			res.Hit = int64(val[0].Score)
-			res.Int1, _ = strconv.ParseInt(p[0], 10, 64)
-			res.Int2, _ = strconv.ParseInt(p[1], 10, 64)
-			res.Limit, _ = strconv.ParseInt(p[2], 10, 64)
-			res.Str1 = p[3]
-			res.Str2 = p[4]
+		topRequest, errorMessage := utils.GetTopRequestFromList(topRequests)
+		if errorMessage != nil {
+			return stats.NewGetAPIStatsNotFound().WithPayload(errorMessage)
 		}
-		return stats.NewGetAPIStatsOK().WithPayload(&res)
+
+		return stats.NewGetAPIStatsOK().WithPayload(topRequest)
 	})
 
 	api.AddMiddlewareFor("GET", "/api/fizzbuzz", increaseCounterMiddleware)
