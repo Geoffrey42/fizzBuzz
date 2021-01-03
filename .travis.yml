@@ -2,14 +2,18 @@ language: go
 go:
   - "1.14.1"
 
+services:
+  - docker
 
 git:
   depth: false
 
 before_install:
     - wget -O /tmp/gommit https://github.com/antham/gommit/releases/download/v2.2.0/gommit_linux_386
-    - chmod 777 /tmp/gommit
-    - chmod 777 ./.coverage.sh
+    - chmod 777 /tmp/gommit ./.coverage.sh
+    - docker pull quay.io/goswagger/swagger
+    - alias docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
+    - swagger version
 jobs:
   include:
     - name: "Check commits"
@@ -18,6 +22,8 @@ jobs:
       script: cd fb/ && go test && cd ../utils && go test
     - name: "Code coverage"
       script: ./.coverage.sh
+    - name: "Validate swagger.yml"
+      script: swagger validate ./swagger.yml
     - name: "Build"
       script: "docker-compose up -d"
 
