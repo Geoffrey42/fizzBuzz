@@ -44,7 +44,7 @@ paths:
           schema:
             $ref: "#/definitions/stat"
         404:
-          description: No stored request can be found.
+          description: No stored request can be found or several different requests has the top hits.
           schema:
             $ref: "#/definitions/error"
         500:
