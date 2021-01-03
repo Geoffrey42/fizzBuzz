@@ -117,6 +117,8 @@ fb-redis            docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/
 fb-redis_exporter   ./redis_exporter -redis.ad ...   Up      0.0.0.0:9121->9121/tcpp
 ```
 
+**Important note**: On first log in, Grafana default username and password are **admin**.
+
 ## Usage
 
 The fizzbuzz server exposes two endpoints:
