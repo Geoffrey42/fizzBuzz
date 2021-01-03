@@ -14,18 +14,26 @@ before_install:
     - docker pull quay.io/goswagger/swagger
     - docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger version
 
+stages:
+  - test
+  - build
+
 jobs:
   include:
-    - name: "Check commits"
-      script: perl .test-branch-commit-messages-in-travis.pl
-    - name: "Unit tests"
-      script: cd fb/ && go test && cd ../utils && go test
-    - name: "Code coverage"
-      script: ./.coverage.sh
-    - name: "Validate swagger.yml"
-      script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger validate ./swagger.yml
-    - name: "Build"
-      script: "make"
+  - stage: test
+    name: Check commits
+    script: perl .test-branch-commit-messages-in-travis.pl
+  - script: cd fb/ && go test && cd ../utils && go test
+    name: Unit tests
+  - script: "./.coverage.sh"
+    name: Code coverage
+  - script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger
+      validate ./swagger.yml
+    name: Validate swagger.yml
+
+  - stage: build
+    name: Build
+    script: make
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
