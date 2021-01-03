@@ -3,7 +3,7 @@
 set -e
 echo "" > coverage.txt
 
-declare -a packages=("fb" "utils")
+declare -a packages=("fb" "statistics")
 
 for d in "${packages[@]}"; do
     cd $d
