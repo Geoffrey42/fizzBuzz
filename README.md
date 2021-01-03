@@ -108,10 +108,13 @@ Check that everything is correct by running:
 ```bash
 $ make ps
 docker-compose ps
-  Name                Command               State           Ports         
---------------------------------------------------------------------------
-fb-api     /bin/sh -c ./fizzbuzz-serv ...   Up      0.0.0.0:5000->5000/tcp
-fb-redis   docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/tcp
+      Name                     Command               State           Ports         
+-----------------------------------------------------------------------------------
+fb-api              /bin/sh -c ./fizzbuzz-serv ...   Up      0.0.0.0:5000->5000/tcp
+fb-grafana          /run.sh                          Up      0.0.0.0:3000->3000/tcp
+fb-prometheus       /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp
+fb-redis            docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/tcp
+fb-redis_exporter   ./redis_exporter -redis.ad ...   Up      0.0.0.0:9121->9121/tcpp
 ```
 
 ## Usage
