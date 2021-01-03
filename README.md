@@ -18,6 +18,7 @@ A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 - [Usage](#usage)
 - [Swagger](#swagger)
 - [Core logic](#core-logic)
+- [Monitoring](#monitoring)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -79,9 +80,12 @@ Create an **.env** file based on this [.env.sample](./.env.sample):
 ```bash
 HTTP_PROXY=
 HTTPS_PROXY=
+API_PORT=
 REDIS_HOSTNAME=
 REDIS_PORT=
-API_PORT=
+REDIS_EXP_PORT=
+PROMETHEUS_PORT=
+GRAFANA_PORT=
 ```
 
 Fill it according to your configuration needs.
@@ -105,11 +109,16 @@ Check that everything is correct by running:
 ```bash
 $ make ps
 docker-compose ps
-  Name                Command               State           Ports         
---------------------------------------------------------------------------
-fb-api     /bin/sh -c ./fizzbuzz-serv ...   Up      0.0.0.0:5000->5000/tcp
-fb-redis   docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/tcp
+      Name                     Command               State           Ports         
+-----------------------------------------------------------------------------------
+fb-api              /bin/sh -c ./fizzbuzz-serv ...   Up      0.0.0.0:5000->5000/tcp
+fb-grafana          /run.sh                          Up      0.0.0.0:3000->3000/tcp
+fb-prometheus       /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp
+fb-redis            docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/tcp
+fb-redis_exporter   ./redis_exporter -redis.ad ...   Up      0.0.0.0:9121->9121/tcpp
 ```
+
+**Important note**: On first log in, Grafana default username and password are **admin**.
 
 ## Usage
 
@@ -173,6 +182,16 @@ func DoFizzBuzz(int1, int2, limit int64, str1, str2 string) ([]string, error) {
 **Important note**: limit must be between 1 and 100.
 
 See actual function in [fizzbuzz.go](./fb/fizzbuzz.go)
+
+## Monitoring
+
+The redis container is essential to get **/api/stats** endpoint working. Thus, a grafana dashboard is available to monitor the database.
+
+Go to your grafana instance (according to your **.env** settings). Be aware that on first log-in, both default username and password are **admin**.
+
+Then search for **Redis Dashboard for Prometheus Redis Exporter 1.x** dashboard. See capture below.
+
+![redis_exporter_grafana_dashboard](./assets/redis_exporter_grafana_dashboard.png)
 
 ## Contributing
 
