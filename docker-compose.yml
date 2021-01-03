@@ -1,0 +1,60 @@
+version: "3"
+services:
+  api:
+    build:
+      context: .
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    image: fb-api-img
+    environment:
+      - REDIS_HOSTNAME=${REDIS_HOSTNAME}
+    ports:
+      - "${API_PORT}:5000"
+    depends_on:
+      - redis
+    container_name: fb-api
+
+  redis:
+    image: redis:5.0.9-alpine
+    ports:
+      - "${REDIS_PORT}:6379"
+    container_name: ${REDIS_HOSTNAME}
+
+  redis_exporter:
+    image: oliver006/redis_exporter:v1.15.0-alpine
+    ports:
+      - "${REDIS_EXP_PORT}:9121"
+    depends_on:
+      - redis
+    entrypoint:
+      - "./redis_exporter"
+      - "-redis.addr"
+      - "redis://${REDIS_HOSTNAME}:6379"
+    container_name: fb-redis_exporter
+
+  prometheus:
+    build:
+      context: ./prometheus
+    ports:
+      - "${PROMETHEUS_PORT}:9090"
+    volumes:
+      - prometheus-storage:/prometheus
+    depends_on:
+      - redis_exporter
+    container_name: fb-prometheus
+
+  grafana:
+    image: "grafana/grafana:7.3.0"
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+    container_name: fb-grafana
+
+volumes:
+  prometheus-storage:
+  grafana-storage:

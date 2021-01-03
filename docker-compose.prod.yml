@@ -1,0 +1,25 @@
+version: "3"
+services:
+  api:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "1"
+    restart: always
+
+  redis:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "1"
+    restart: always
+
+  prometheus:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "1"
+    restart: always

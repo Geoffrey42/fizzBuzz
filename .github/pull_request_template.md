@@ -24,8 +24,10 @@ _Put an  in the boxes that apply_
 
 - [ ] Bugfix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
+- [ ] CI/CD related changes
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Refactor
+- [ ] Documentation
 
 ## Checklist
 
