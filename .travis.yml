@@ -9,7 +9,7 @@ git:
 before_install:
     - wget -O /tmp/gommit https://github.com/antham/gommit/releases/download/v2.2.0/gommit_linux_386
     - chmod 777 /tmp/gommit
-    - chmod 777 ./coverage.sh
+    - chmod 777 ./.coverage.sh
 jobs:
   include:
     - name: "Check commits"
@@ -17,7 +17,7 @@ jobs:
     - name: "Unit tests"
       script: cd fb/ && go test && cd ../utils && go test
     - name: "Code coverage"
-      script: ./coverage.sh
+      script: ./.coverage.sh
     - name: "Build"
       script: "docker-compose up -d"
 
