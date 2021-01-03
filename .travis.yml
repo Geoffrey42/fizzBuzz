@@ -43,3 +43,4 @@ branches:
   only:
   - main
   - develop
+  - ci/deploy_on_Heroku
