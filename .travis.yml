@@ -14,8 +14,14 @@ before_install:
 - docker pull quay.io/goswagger/swagger
 - docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger version
 
+stages:
+  - test
+  - build
+  - deploy
+
 jobs:
   include:
+  - stage: test
   - name: Check commits
     script: perl .test-branch-commit-messages-in-travis.pl
   - name: Unit tests
@@ -25,19 +31,23 @@ jobs:
   - name: Validate swagger.yml
     script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger
       validate ./swagger.yml
+
+  - stage: build
   - name: Build
     script: make
 
+  - stage: deploy
+    script: skip
+    deploy: &heroku
+      provider: heroku
+      api_key:
+        secure: Cw+yKi95rCLLiq7uPBPRwY4HmAb5DPsYISfgYhRNv7st0Cuhi7somRkj5uZpo01z5mDLAzQ7E4Jz09skKYiiwsDPoU1MpxzvlkIXyri+nCr0NwRG/AzuG6vXaqBlrg1OGO452/h3OpKbwuEx1ZpoLVjkLeZ0vgEkgtSoDdrxFZRiObMBu6ub1CqFOhzKWnjYf2L2e3N6uRDcMn1+kkQ5ww2dyh9HtQ5lUYubp5M1lb7yysCFQxXHH+jBj5YBz76TM4KJNIt3Qr5OcH7ZlM1TMDWDi9vWiyjo0PA8OsKFOC9uA30eBaa+PaTkVlMegd5rIbOMvRfRHlQ5rIPANIxJVPafvOolPICfP+MKge1+/6DyLbfD2Jp8UYqALVKewvGm3yrxUy3xy7VC/Tj7rmQRbgQaScWuD1uxnjjCwbBR/0Vji6uFSNgz2rqWr12zqpryl/3jpla3Tu9vs52GEllePODc/cZhn303F4SXxeA+ciKq0FcyM1z0tnjK4i87lnAGsmOUWoFBkWpBDix+j6BAEK5TuNSd88uakCuVkkv+Fy8IzkDpMeNTpxSYLeAlclG46XVowk7s3C3QCZHPeuRcQPiuJFOrUZEsaG5vI1sx18/cFfDUWVGpVFw4tVL0Tpew4MxBToQibcJuLbpZkeEb0gr2sDGp3cOrU+oP0H+ZwlI=
+      app: leboncoin-fizzbuzz
+      on:
+        all_branches: true
+
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-
-deploy:
-  provider: heroku
-  api_key:
-    secure: Cw+yKi95rCLLiq7uPBPRwY4HmAb5DPsYISfgYhRNv7st0Cuhi7somRkj5uZpo01z5mDLAzQ7E4Jz09skKYiiwsDPoU1MpxzvlkIXyri+nCr0NwRG/AzuG6vXaqBlrg1OGO452/h3OpKbwuEx1ZpoLVjkLeZ0vgEkgtSoDdrxFZRiObMBu6ub1CqFOhzKWnjYf2L2e3N6uRDcMn1+kkQ5ww2dyh9HtQ5lUYubp5M1lb7yysCFQxXHH+jBj5YBz76TM4KJNIt3Qr5OcH7ZlM1TMDWDi9vWiyjo0PA8OsKFOC9uA30eBaa+PaTkVlMegd5rIbOMvRfRHlQ5rIPANIxJVPafvOolPICfP+MKge1+/6DyLbfD2Jp8UYqALVKewvGm3yrxUy3xy7VC/Tj7rmQRbgQaScWuD1uxnjjCwbBR/0Vji6uFSNgz2rqWr12zqpryl/3jpla3Tu9vs52GEllePODc/cZhn303F4SXxeA+ciKq0FcyM1z0tnjK4i87lnAGsmOUWoFBkWpBDix+j6BAEK5TuNSd88uakCuVkkv+Fy8IzkDpMeNTpxSYLeAlclG46XVowk7s3C3QCZHPeuRcQPiuJFOrUZEsaG5vI1sx18/cFfDUWVGpVFw4tVL0Tpew4MxBToQibcJuLbpZkeEb0gr2sDGp3cOrU+oP0H+ZwlI=
-  app: leboncoin-fizzbuzz
-  on:
-    all_branches: true
 
 branches:
   only:
