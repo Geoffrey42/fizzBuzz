@@ -12,7 +12,7 @@ before_install:
     - wget -O /tmp/gommit https://github.com/antham/gommit/releases/download/v2.2.0/gommit_linux_386
     - chmod 777 /tmp/gommit ./.coverage.sh
     - docker pull quay.io/goswagger/swagger
-    - alias swagger="docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
+    - alias swagger="docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
     - swagger version
 
 jobs:
