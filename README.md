@@ -80,14 +80,14 @@ git checkout main
 Create an **.env** file based on this [.env.sample](./.env.sample):
 
 ```bash
-HTTP_PROXY=
-HTTPS_PROXY=
-API_PORT=
-REDIS_HOSTNAME=
-REDIS_PORT=
-REDIS_EXP_PORT=
-PROMETHEUS_PORT=
-GRAFANA_PORT=
+HTTP_PROXY=       # Your corporate proxy if applicable
+HTTPS_PROXY=      # Your corporate proxy if applicable
+API_PORT=         # Any available port for your API
+REDIS_HOSTNAME=   # Any string to identify your Redis instance
+REDIS_PORT=       # Any available port for your Redis instance
+REDIS_EXP_PORT=   # Any available port for redis_exporter
+PROMETHEUS_PORT=  # Any available port for Prometheus
+GRAFANA_PORT=     # Any available port for Grafana
 ```
 
 Fill it according to your configuration needs.
