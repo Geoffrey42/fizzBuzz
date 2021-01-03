@@ -22,21 +22,22 @@ stages:
 jobs:
   include:
   - stage: test
-  - name: Check commits
+    name: Check commits
     script: perl .test-branch-commit-messages-in-travis.pl
-  - name: Unit tests
-    script: cd fb/ && go test && cd ../utils && go test
-  - name: Code coverage
-    script: "./.coverage.sh"
-  - name: Validate swagger.yml
-    script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger
+  - script: cd fb/ && go test && cd ../utils && go test
+    name: Unit tests
+  - script: "./.coverage.sh"
+    name: Code coverage
+  - script: docker run --rm -it -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger
+    name: Validate swagger.yml
       validate ./swagger.yml
 
   - stage: build
-  - name: Build
+    name: Build
     script: make
 
   - stage: deploy
+    name: Deploy to Heroku
     script: skip
     deploy: &heroku
       provider: heroku
