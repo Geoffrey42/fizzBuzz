@@ -18,6 +18,8 @@ A simple fizz-buzz REST server in Golang (LeBonCoin's technical test).
 - [Usage](#usage)
 - [Swagger](#swagger)
 - [Core logic](#core-logic)
+  - [For the fizz-buzz endpoint](#for-the-fizz-buzz-endpoint)
+  - [For the statistics endpoint](#for-the-statistics-endpoint)
 - [Monitoring](#monitoring)
 - [Contributing](#contributing)
 - [License](#license)
@@ -49,12 +51,13 @@ The output would look like this: **"1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,1
 
 ## Prerequisites
 
+To build and run this server, the following must be installed:
+
 - [make](https://www.gnu.org/software/make/manual/make.html) *version 3.81*
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) *version 2.26.2*
 - [docker](https://docs.docker.com/get-docker/) *version 20.10.0*
 - [docker-compose](https://docs.docker.com/compose/install/) *version 1.27.4*
-- [gommit](https://github.com/antham/gommit) (if you want to contribute to the project) *version 2.2.0*
-- go-swagger *version 0.25.0*
+- [gommit](https://github.com/antham/gommit) (**only** if you want to contribute to the project) *version 2.2.0*
 
 **Important note**: The specified versions are for information purposes only. They are the versions used to develop the project and not the minimum required to run it.
 
@@ -78,14 +81,14 @@ git checkout main
 Create an **.env** file based on this [.env.sample](./.env.sample):
 
 ```bash
-HTTP_PROXY=
-HTTPS_PROXY=
-API_PORT=
-REDIS_HOSTNAME=
-REDIS_PORT=
-REDIS_EXP_PORT=
-PROMETHEUS_PORT=
-GRAFANA_PORT=
+HTTP_PROXY=       # Your corporate proxy if applicable
+HTTPS_PROXY=      # Your corporate proxy if applicable
+API_PORT=         # Any available port for your API
+REDIS_HOSTNAME=   # Any string to identify your Redis instance
+REDIS_PORT=       # Any available port for your Redis instance
+REDIS_EXP_PORT=   # Any available port for redis_exporter
+PROMETHEUS_PORT=  # Any available port for Prometheus
+GRAFANA_PORT=     # Any available port for Grafana
 ```
 
 Fill it according to your configuration needs.
@@ -139,6 +142,8 @@ A Swagger UI documentation available at ```http://127.0.0.1:5000/docs``` (IP + p
 
 ## Core logic
 
+### For the fizz-buzz endpoint
+
 At the heart of the server lies a simple ```DoFizzBuzz``` function defined as the following:
 
 ```go
@@ -182,6 +187,76 @@ func DoFizzBuzz(int1, int2, limit int64, str1, str2 string) ([]string, error) {
 **Important note**: limit must be between 1 and 100.
 
 See actual function in [fizzbuzz.go](./fb/fizzbuzz.go)
+
+### For the statistics endpoint
+
+The statistics endpoint relies heavily on Redis Sorted Set data structure. When a request hits the above **/api/fizzbuzz** endpoint:
+
+- A Sorted Set member is created in the form of a string "int1-int2-limit-str1-str2" e.g "3-5-16-fizz-buzz" would be created for the assignment's example.
+- Its score is increaseb by one.
+
+A http middleware being a perfect fit to intercept incoming requests, here the snippet in [configure_fizzbuzz.go](./restapi/configure_fizzbuzz.go)
+
+```go
+func increaseCounterMiddleware(handler http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+        limit, err := strconv.Atoi(r.URL.Query()["limit"][0])
+
+        if err == nil && limit >= 1 && limit <= 100 {
+            member := utils.BuildMemberFromParams(r.URL.Query())
+            client.ZIncrBy(utils.Key, 1, member)
+        }
+        
+        handler.ServeHTTP(w, r)
+    })
+}
+```
+
+Then, when a client request the **/api/stats** endpoint, it returns the first element of the go-redis equivalent of [ZREVRANGE](https://redis.io/commands/zrevrange).
+
+Here is the model for the Stat struct returned by **/api/stats** in [stat.go](./models/stat.go):
+
+```go
+type Stat struct {
+
+    Hit int64 `json:"hit,omitempty"`
+    Int1 int64 `json:"int1,omitempty"`
+    Int2 int64 `json:"int2,omitempty"`
+    Limit int64 `json:"limit,omitempty"`
+    Str1 string `json:"str1,omitempty"`
+    Str2 string `json:"str2,omitempty"`
+}
+```
+
+And here is the http.handler in [configure_fizzbuzz.go](./restapi/configure_fizzbuzz.go):
+
+```go
+    api.StatsGetAPIStatsHandler = stats.GetAPIStatsHandlerFunc(func(params stats.GetAPIStatsParams) middleware.Responder {
+        ok, err := client.Exists(utils.Key).Result()
+        if err != nil {
+            errorMessage := models.Error{Code: 500, Message: "Database isn't available: " + err.Error()}
+            return stats.NewGetAPIStatsInternalServerError().WithPayload(&errorMessage)
+        } else if ok == 0 {
+            errorMessage := models.Error{Code: 404, Message: "No stored request can be found."}
+            return stats.NewGetAPIStatsNotFound().WithPayload(&errorMessage)
+        }
+        val, _ := client.ZRevRangeWithScores(utils.Key, 0, -1).Result()
+
+        res := models.Stat{}
+
+        if str, ok := val[0].Member.(string); ok {
+            p := strings.Split(str, "-")
+            res.Hit = int64(val[0].Score)
+            res.Int1, _ = strconv.ParseInt(p[0], 10, 64)
+            res.Int2, _ = strconv.ParseInt(p[1], 10, 64)
+            res.Limit, _ = strconv.ParseInt(p[2], 10, 64)
+            res.Str1 = p[3]
+            res.Str2 = p[4]
+        }
+        return stats.NewGetAPIStatsOK().WithPayload(&res)
+    })
+```
 
 ## Monitoring
 
