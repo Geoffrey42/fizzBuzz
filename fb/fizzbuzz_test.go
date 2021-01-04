@@ -16,9 +16,14 @@ func TestDoFizzBuzz(t *testing.T) {
 			"13", "14", "fizzbuzz", "16",
 		}
 
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("got %s but want %s", got, want)
-		}
+		assertMessage(t, got, want)
+	})
+
+	t.Run("check multiple of 1", func(t *testing.T) {
+		got, _ := DoFizzBuzz(1, 8, 3, "Perceval", "Karadoc")
+		want := []string{"Perceval", "Perceval", "Perceval"}
+
+		assertMessage(t, got, want)
 	})
 
 	t.Run("limit greater than 100", func(t *testing.T) {
@@ -32,6 +37,12 @@ func TestDoFizzBuzz(t *testing.T) {
 
 		assertError(t, err)
 	})
+}
+
+func assertMessage(t *testing.T, got, want []string) {
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %s but want %s", got, want)
+	}
 }
 
 func assertError(t *testing.T, err error) {
