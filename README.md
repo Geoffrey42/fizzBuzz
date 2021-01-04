@@ -68,7 +68,7 @@ To build and run this server, the following must be installed:
 Clone the project:
 
 ```bash
-git clone git@github.com:Geoffrey42/fizzBuzz.git
+git clone https://github.com/Geoffrey42/fizzBuzz.git
 cd fizzBuzz
 ```
 
