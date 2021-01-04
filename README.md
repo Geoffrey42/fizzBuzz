@@ -59,7 +59,7 @@ To build and run this server, the following must be installed:
 - [docker-compose](https://docs.docker.com/compose/install/) *version 1.27.4*
 - [gommit](https://github.com/antham/gommit) (**only** if you want to contribute to the project) *version 2.2.0*
 
-**Important note**: The specified versions are for information purposes only. They are the versions used to develop the project and not the minimum required to run it.
+⚠**Important note**: The specified versions are for information purposes only. They are the versions used to develop the project and not the minimum required to run it.
 
 ## Installation
 
@@ -68,7 +68,7 @@ To build and run this server, the following must be installed:
 Clone the project:
 
 ```bash
-git clone git@github.com:Geoffrey42/fizzBuzz.git
+git clone https://github.com/Geoffrey42/fizzBuzz.git
 cd fizzBuzz
 ```
 
@@ -83,7 +83,7 @@ Create an **.env** file based on this [.env.sample](./.env.sample):
 ```bash
 HTTP_PROXY=       # Your corporate proxy if applicable
 HTTPS_PROXY=      # Your corporate proxy if applicable
-API_PORT=         # Any available port for your API
+API_PORT=         # Any available port for your API e.g my-redis
 REDIS_HOSTNAME=   # Any string to identify your Redis instance
 REDIS_PORT=       # Any available port for your Redis instance
 REDIS_EXP_PORT=   # Any available port for redis_exporter
@@ -107,7 +107,9 @@ or
 make dev # for dev (no restart always and log rotation)
 ```
 
-Check that everything is correct by running:
+Depending on your connection, those above commands can take some time.
+
+Once it's done, check that everything is correct by running:
 
 ```bash
 $ make ps
@@ -121,7 +123,7 @@ fb-redis            docker-entrypoint.sh redis ...   Up      0.0.0.0:6368->6379/
 fb-redis_exporter   ./redis_exporter -redis.ad ...   Up      0.0.0.0:9121->9121/tcpp
 ```
 
-**Important note**: On first log in, Grafana default username and password are **admin**.
+⚠️**Important note**: On first log in, Grafana default username and password are **admin**.
 
 ## Usage
 
@@ -134,11 +136,15 @@ To perform some tests on your running configuration you can still use ```curl```
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/4a4f3a8f7e69dc307b88)
 
+You will have to change the API port number (5000 in the Postman collection) by the API_PORT from your **.env** file.
+
+You can also perform some tests on your Swagger UI. See [Swagger](#swagger) section.
+
 ## Swagger
 
 The server was built using [go-swagger](https://github.com/go-swagger/go-swagger). It's a Golang implementation of Swagger 2.0 specification. The server source code has been generated from this [swagger.yml](./swagger.yml).
 
-A Swagger UI documentation available at ```http://127.0.0.1:5000/docs``` (IP + port may vary depending on your custom settings).
+A Swagger UI documentation available at ```http://127.0.0.1:[API_PORT]/docs```.
 
 ## Core logic
 
@@ -187,7 +193,7 @@ func DoFizzBuzz(int1, int2, limit int64, str1, str2 string) ([]string, error) {
 }
 ```
 
-**Important note**: limit must be between 1 and 100.
+⚠**Important note**: limit must be between 1 and 100.
 
 See actual function in [fizzbuzz.go](./fb/fizzbuzz.go)
 
@@ -257,13 +263,13 @@ And here is the http.handler in [configure_fizzbuzz.go](./restapi/configure_fizz
 
 ## Monitoring
 
-The redis container is essential to get **/api/stats** endpoint working. Thus, a grafana dashboard is available to monitor the database.
+The redis container is essential to get **/api/stats** endpoint working. Thus, a monitoring stack composed of a [Prometheus](https://prometheus.io/) instance, a [redis_exporter](https://github.com/oliver006/redis_exporter) and a [Grafana](https://grafana.com/) dashboard is available to monitor the database.
 
-Go to your grafana instance (according to your **.env** settings). Be aware that on first log-in, both default username and password are **admin**.
+Go to your grafana instance (```http://127.0.0.1:[GRAFANA_PORT]```) to see the metrics exposed by redis_exporter. Be aware that on first log-in, both default username and password are **admin**.
 
-Then search for **Redis Dashboard for Prometheus Redis Exporter 1.x** dashboard. See capture below.
+Then search for **Redis Dashboard for Prometheus Redis Exporter 1.x** dashboard. See capture below:
 
-![redis_exporter_grafana_dashboard](./assets/redis_exporter_grafana_dashboard.png)
+![redis_exporter_grafana_dashboard](./assets/fb-grafana.gif)
 
 ## Contributing
 
